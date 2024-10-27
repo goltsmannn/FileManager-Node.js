@@ -3,8 +3,13 @@ import config from "./config.js";
 import {up, ls} from "./dirManagement.js";
 import cat from './readFile.js'
 import rn from './renameFile.js'
-import cp from "./copyFile.js";
-
+import {cp, mv} from "./copyFile.js";
+import compressDecompress from "./compDecomp.js";
+import add from "./addFile.js";
+import rm from "./removeFile.js";
+import hash from "./hashFile.js";
+import os from "./osOperations.js";
+import osFunc from "./osOperations.js";
 
 validateParameters();
 process.stdin
@@ -27,7 +32,6 @@ async function processUserInput(data) {
             await ls()
             break;
 
-
         case "cat":
             await cat(data);
             break;
@@ -39,5 +43,36 @@ async function processUserInput(data) {
         case "cp":
             await cp(data);
             break;
+
+        case "mv":
+            await mv(data);
+            break;
+
+        case "compress":
+            await compressDecompress(data, 'compress');
+            break;
+
+        case "decompress":
+            await compressDecompress(data, 'decompress');
+            break;
+
+        case "add":
+            await add(data);
+            break;
+
+        case "rm":
+            await rm(data);
+            break;
+
+        case "hash":
+            await hash(data);
+            break;
+
+        case "os":
+            await osFunc(data);
+            break;
+
+        default:
+            process.stdout.write(`Unsupported operation\n`);
     }
 }
