@@ -5,6 +5,7 @@ function validateParameters(){
     console.log(paramValue);
     if (paramName.replace('--', '') === 'username'){
         process.stdout.write(`Welcome to the File Manager, ${paramValue}!\n`);
+        process.stdout.write(`You are currently in directory: ${config.currentDirectory}\n`);
         config.username = paramValue;
     }
     else{

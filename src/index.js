@@ -1,6 +1,6 @@
 import validateParameters from "./welcome.js";
 import config from "./config.js";
-import {up, ls} from "./dirManagement.js";
+import {up, ls, cd} from "./dirManagement.js";
 import cat from './readFile.js'
 import rn from './renameFile.js'
 import {cp, mv} from "./copyFile.js";
@@ -13,19 +13,24 @@ import osFunc from "./osOperations.js";
 
 validateParameters();
 process.stdin
-    .on('data', (data) => {processUserInput(data.toString().trim())})
+    .on('data', async (data) => {
+        await processUserInput(data.toString().trim())
+    });
+
+process.on('exit', (_)=>{console.log(`Thank you for using File Manager, ${config.username}, goodbye!\n`);})
+
+process.on('SIGINT', (_) => {process.exit();});
 
 
 async function processUserInput(data) {
     const cmd = data.split(' ')[0]
     switch (cmd) {
         case ".exit":
-            process.stdout.write(`Thank you for using File Manager, ${config.username}, goodbye!\n`);
             process.exit();
             break;
 
         case "up":
-            up()
+            await up()
             break;
 
         case "ls":
@@ -72,7 +77,12 @@ async function processUserInput(data) {
             await osFunc(data);
             break;
 
+        case "cd":
+            await cd(data);
+            break;
+
         default:
             process.stdout.write(`Unsupported operation\n`);
     }
+    process.stdout.write(`You are currently in directory: ${config.currentDirectory}\n`);
 }
